@@ -9,15 +9,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
 @SpringBootTest
 @ActiveProfiles("test")
 class ItemRepositoryTest {
@@ -25,6 +28,7 @@ class ItemRepositoryTest {
     @Autowired
     ItemRepository itemRepository;
     
+    /*
     @Autowired
     PlatformTransactionManager transactionManager;
     TransactionStatus status;
@@ -34,7 +38,8 @@ class ItemRepositoryTest {
     	//트랜잭션 시작
     	status = transactionManager.getTransaction(new DefaultTransactionDefinition());
     }
-
+    */
+    
     @AfterEach
     void afterEach() {
         //MemoryItemRepository 의 경우 제한적으로 사용
@@ -42,9 +47,11 @@ class ItemRepositoryTest {
             ((MemoryItemRepository) itemRepository).clearStore();
         }
         //트랜잭션 롤백
-        transactionManager.rollback(status);
+        //transactionManager.rollback(status);
     }
 
+    
+    @Commit
     @Test
     void save() {
         //given
